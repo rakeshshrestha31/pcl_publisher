@@ -1,0 +1,36 @@
+<launch>
+    <arg name="pkg_namespace" default="/pcl_publisher" />
+
+    <arg name="rgb_topic" default="$(arg pkg_namespace)/rgb" />
+    <arg name="depth_topic" default="$(arg pkg_namespace)/depth" />
+    <arg name="camera_info_topic" default="$(arg pkg_namespace)/camera_info" />
+
+    <!-- fx, fy, cx, cy-->
+    <arg name="camera_intrinsics" default="531.49230957 532.39190674 314.63775635 252.53335571" />
+    <!-- R and t -->
+    <arg name="camera_extrinsics" default="" />
+
+    <arg name="node_name" default="pcl_publisher"/>
+
+    <!-- <node name="$(arg node_name)" type="detect_people" pkg="pcl_people_detector" output="screen"> -->
+    <node name="$(arg node_name)" type="pcl_publisher_images" pkg="pcl_publisher" output="screen">
+        <param name="rgb_topic" value="$(arg rgb_topic)" />
+        <param name="depth_topic" value="$(arg depth_topic)" />
+        <param name="camera_info_topic" value="$(arg camera_info_topic)" />
+        <param name="camera_intrinsics" value="$(arg camera_intrinsics)" />
+    </node>
+
+    <!-- Nodelet manager for depth_image_proc -->
+    <node pkg="nodelet" type="nodelet" args="manager" name="depth_transforms_manager" output="screen"/>
+
+    <!-- For converting uint16 depth image in mm to float depth image in m -->
+    <node pkg="nodelet" type="nodelet" name="convert_depth_to_metric"
+    args="load depth_image_proc/convert_metric depth_transforms_manager --no-bond">
+        <remap from="image_raw" to="$(arg depth_topic)" />
+        <remap from="image" to="$(arg pkg_namespace)/depth/metric" />
+    </node>
+
+    
+    
+
+</launch>
