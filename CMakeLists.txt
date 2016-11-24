@@ -6,16 +6,25 @@ project(pcl_publisher)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   cmake_modules
+  cv_bridge
+  depth_image_proc
   eigen_conversions
+  image_geometry
+  image_transport
+  message_filters
   pcl_conversions
   roscpp
   roslib
+  sensor_msgs
+  stereo_msgs
   spencer_tracking_msgs
   spencer_vision_msgs
   tf_conversions
-  image_transport
-  cv_bridge
+  tf2
+  tf2_ros
+  
 )
+
 
 find_package(OpenCV REQUIRED)
 message(STATUS "Using OpenCV version ${OpenCV_VERSION} installed at: ${OpenCV_INCLUDE_DIRS}")
@@ -24,8 +33,15 @@ message(STATUS "OpenCV supported compute capabilities are: ${OpenCV_COMPUTE_CAPA
 find_package(Eigen REQUIRED)
 find_package(PCL REQUIRED COMPONENTS common io visualization)
 
+find_package(Boost REQUIRED)
+find_package(Eigen3 QUIET)
+if(NOT EIGEN3_FOUND)
+  find_package(Eigen REQUIRED)
+  set(EIGEN3_INCLUDE_DIRS ${EIGEN_INCLUDE_DIRS})
+endif()
 
-include_directories(src ${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+include_directories(include/${PROJECT_NAME} ${BOOST_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS})
+include_directories(src ${BOOST_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -147,11 +163,15 @@ catkin_package(
 ## Declare a C++ executable
 add_executable(pcl_publisher_node src/pcl_publisher_node.cpp)
 add_executable(pcl_publisher_images src/pcl_publisher_images.cpp)
+add_executable(point_cloud_xyz src/point_cloud_xyz.cpp)
+# add_executable(point_cloud_xyzrgb src/point_cloud_xyzrgb.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(pcl_publisher_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(pcl_publisher_images ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(point_cloud_xyz ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+# add_dependencies(point_cloud_xyzrgb ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(pcl_publisher_node
@@ -163,6 +183,16 @@ target_link_libraries(pcl_publisher_images
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
 )
+
+target_link_libraries(point_cloud_xyz
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+)
+
+# target_link_libraries(point_cloud_xyzrgb
+#   ${catkin_LIBRARIES}
+#   ${OpenCV_LIBRARIES}
+# )
 
 
 

@@ -5,6 +5,7 @@
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <std_msgs/Float64.h>
+#include <tf/transform_broadcaster.h>
 
 
 using namespace std;
@@ -16,8 +17,9 @@ void getVectorFromString(string str, std::vector<double> &vector)
   while (is >> value) {
     vector.push_back(value);
   }
-  
 }
+
+
 
 int main(int argc, char** argv)
 {
@@ -110,15 +112,17 @@ int main(int argc, char** argv)
   camera_info_msg.width = rgb_image.cols;
   camera_info_msg.distortion_model = "plumb_bob";
   
-  camera_info_msg.D.push_back(0.19607373);
-  camera_info_msg.D.push_back(-0.36734107);
-  camera_info_msg.D.push_back(-2.47962005e-003);
-  camera_info_msg.D.push_back(-1.89774996e-003);
+  // camera_info_msg.D.push_back(0.19607373);
+  // camera_info_msg.D.push_back(-0.36734107);
+  // camera_info_msg.D.push_back(-2.47962005e-003);
+  // camera_info_msg.D.push_back(-1.89774996e-003);
 
-  // camera_info_msg.D[0] = 0.19607373;
-  // camera_info_msg.D[1] = -0.36734107;
-  // camera_info_msg.D[2] = -2.47962005e-003;
-  // camera_info_msg.D[3] = -1.89774996e-003;
+  camera_info_msg.D.push_back(0);
+  camera_info_msg.D.push_back(0);
+  camera_info_msg.D.push_back(0);
+  camera_info_msg.D.push_back(0);
+  camera_info_msg.D.push_back(0);
+
   
   camera_info_msg.K[0] = 531.49230957;
   camera_info_msg.K[1] = 0.;
@@ -153,16 +157,18 @@ int main(int argc, char** argv)
   camera_info_msg.P[10] = 1.;
   camera_info_msg.P[11] = 0.;
 
-
-
-  // end new code: faraz
+  camera_info_msg.header.frame_id = "map";
+  rgb_msg->header.frame_id = "map";
+  depth_msg->header.frame_id = "map";
 
   ros::Rate loop_rate(5);
   while (nh.ok()) {
+    camera_info_msg.header.stamp = ros::Time::now();
+    rgb_msg->header.stamp = camera_info_msg.header.stamp;
+    depth_msg->header.stamp = camera_info_msg.header.stamp;
+    
     rgb_pub.publish(rgb_msg);
     depth_pub.publish(depth_msg);
-    
-    camera_info_msg.header.stamp = ros::Time::now();
     camera_info_pub.publish(camera_info_msg);
 
     ros::spinOnce();

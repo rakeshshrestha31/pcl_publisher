@@ -111,9 +111,9 @@ int main( int argc, char *argv[] ) {
 
             float depth = depth_image.at<float>(v,u) / depth_factor;
 
-            float y = depth;
+            float z = depth;
             float x = depth*(u-px_d)/fx_d;
-            float z = depth*(v-py_d)/fy_d;
+            float y = depth*(v-py_d)/fy_d;
             
             cloud(u,v).x = x;
             cloud(u,v).y = y;
