@@ -84,7 +84,7 @@ int main( int argc, char *argv[] ) {
         exit(EXIT_FAILURE);
     }
 
-    const float depth_factor = 5000; // mapping from png depth value to metric scale
+    const float depth_factor = 1000; // mapping from png depth value (mm) to metric scale
     const float fx_d = 531.49230957f;
     const float fy_d = 532.39190674f;
     const float px_d = 314.63775635f;
@@ -109,9 +109,11 @@ int main( int argc, char *argv[] ) {
         //2-D indexing
         for(int u = 0; u < depth_image.cols; u++) {
 
-            float z = depth_image.at<float>(v,u) / depth_factor;
-            float x = z*(u-px_d)/fx_d;
-            float y = z*(v-py_d)/fy_d;
+            float depth = depth_image.at<float>(v,u) / depth_factor;
+
+            float y = depth;
+            float x = depth*(u-px_d)/fx_d;
+            float z = depth*(v-py_d)/fy_d;
             
             cloud(u,v).x = x;
             cloud(u,v).y = y;

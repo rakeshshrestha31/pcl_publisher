@@ -1,0 +1,29 @@
+<launch>
+	<arg name="pkg_namespace" default="/pcl_publisher" />
+
+    <arg name="rgb_topic" default="rgb/image_rect_color" />
+    <arg name="depth_topic" default="depth_registered/image_rect" />
+    <arg name="camera_info_topic" default="rgb/camera_info" />
+
+    <!-- <arg name="rgb_topic" default="$(arg pkg_namespace)/rgb" />
+    <arg name="depth_topic" default="$(arg pkg_namespace)/depth" />
+    <arg name="camera_info_topic" default="$(arg pkg_namespace)/camera_info" /> -->
+
+    <!-- fx, fy, cx, cy-->
+    <arg name="camera_intrinsics" default="531.49230957 532.39190674 314.63775635 252.53335571" />
+    <!-- R and t -->
+    <arg name="camera_extrinsics_R" default="0.869593024 0.005134047 -0.493742496 0.083783410 -0.986979902 0.137298822 -0.486609042 -0.160761520 -0.858700991" />
+    <arg name="camera_extrinsics_t" default="-844.523864746 763.838439941 3232.193359375" />
+
+    <arg name="node_name" default="pcl_publisher"/>
+
+    <!-- <node name="$(arg node_name)" type="detect_people" pkg="pcl_people_detector" output="screen"> -->
+    <node name="$(arg node_name)" type="pcl_publisher_images" pkg="pcl_publisher" output="screen">
+        <param name="rgb_topic" value="$(arg rgb_topic)" />
+        <param name="depth_topic" value="$(arg depth_topic)" />
+        <param name="camera_info_topic" value="$(arg camera_info_topic)" />
+        <param name="camera_intrinsics" value="$(arg camera_intrinsics)" />
+        <param name="camera_extrinsics_R" value="$(arg camera_extrinsics_R)" />
+        <param name="camera_extrinsics_t" value="$(arg camera_extrinsics_t)" />
+    </node>
+</launch>
