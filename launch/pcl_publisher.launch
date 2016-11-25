@@ -18,6 +18,8 @@
 
         <arg name="node_name" default="pcl_publisher"/>
 
+        <node pkg="tf" type="static_transform_publisher" name="tf_broadcaster" args="0 0 0 0 0 0 1 map pcl_people_detector 100" />
+
         <!-- <node name="$(arg node_name)" type="detect_people" pkg="pcl_people_detector" output="screen"> -->
         <node name="$(arg node_name)" type="pcl_publisher_images" pkg="pcl_publisher" output="screen">
             <param name="rgb_topic" value="$(arg rgb_topic)" />

@@ -163,15 +163,11 @@ catkin_package(
 ## Declare a C++ executable
 add_executable(pcl_publisher_node src/pcl_publisher_node.cpp)
 add_executable(pcl_publisher_images src/pcl_publisher_images.cpp)
-add_executable(point_cloud_xyz src/point_cloud_xyz.cpp)
-# add_executable(point_cloud_xyzrgb src/point_cloud_xyzrgb.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(pcl_publisher_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(pcl_publisher_images ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(point_cloud_xyz ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
-# add_dependencies(point_cloud_xyzrgb ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(pcl_publisher_node
@@ -184,15 +180,6 @@ target_link_libraries(pcl_publisher_images
   ${OpenCV_LIBRARIES}
 )
 
-target_link_libraries(point_cloud_xyz
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBRARIES}
-)
-
-# target_link_libraries(point_cloud_xyzrgb
-#   ${catkin_LIBRARIES}
-#   ${OpenCV_LIBRARIES}
-# )
 
 
 

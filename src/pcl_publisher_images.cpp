@@ -49,12 +49,12 @@ int main(int argc, char** argv)
   ros::Publisher camera_info_pub = nh.advertise<sensor_msgs::CameraInfo>(camera_info_topic, 1);
   
   cv::Mat rgb_image = cv::imread(
-    "/home/rakesh/rakesh/cmpt726/BerkeleyMHAD/Kinect/Kin01/S01/A01/R01/kin_k01_s01_a01_r01_color_00000.ppm", 
+    "/home/autolab/rakesh/mhad/kin_k01_s01_a01_r01_color_00000.ppm", 
     CV_LOAD_IMAGE_COLOR
   );
 
   cv::Mat depth_image = cv::imread(
-      "/home/rakesh/rakesh/cmpt726/BerkeleyMHAD/Kinect/Kin01/S01/A01/R01/kin_k01_s01_a01_r01_depth_00000.pgm", 
+      "/home/autolab/rakesh/mhad/kin_k01_s01_a01_r01_depth_00000.pgm", 
       CV_LOAD_IMAGE_ANYDEPTH | CV_LOAD_IMAGE_ANYCOLOR 
   );
 
@@ -124,45 +124,55 @@ int main(int argc, char** argv)
   camera_info_msg.D.push_back(0);
 
   
-  camera_info_msg.K[0] = 531.49230957;
-  camera_info_msg.K[1] = 0.;
-  camera_info_msg.K[2] = 314.63775635;
-  camera_info_msg.K[3] = 0.;
-  camera_info_msg.K[4] = 532.39190674;
-  camera_info_msg.K[5] = 252.53335571;
-  camera_info_msg.K[6] = 0.;
-  camera_info_msg.K[7] = 0.;
-  camera_info_msg.K[8] = 1.;
+  // camera_info_msg.K[0] = 531.49230957;
+  // camera_info_msg.K[1] = 0.;
+  // camera_info_msg.K[2] = 314.63775635;
+  // camera_info_msg.K[3] = 0.;
+  // camera_info_msg.K[4] = 532.39190674;
+  // camera_info_msg.K[5] = 252.53335571;
+  // camera_info_msg.K[6] = 0.;
+  // camera_info_msg.K[7] = 0.;
+  // camera_info_msg.K[8] = 1.;
 
-  camera_info_msg.R[0] = 0.869593024;
-  camera_info_msg.R[1] = 0.005134047;
-  camera_info_msg.R[2] = -0.493742496;
-  camera_info_msg.R[4] = 0.083783410;
-  camera_info_msg.R[3] = -0.986979902;
-  camera_info_msg.R[5] = 0.137298822;
-  camera_info_msg.R[6] = -0.486609042;
-  camera_info_msg.R[7] = -0.160761520;
-  camera_info_msg.R[8] = -0.858700991;
+  camera_info_msg.R[0] = 1; //0.869593024;
+  camera_info_msg.R[1] = 0; //0.005134047;
+  camera_info_msg.R[2] = 0; //-0.493742496;
 
-  camera_info_msg.P[0] = 531.49230957;
-  camera_info_msg.P[1] = 0.;
-  camera_info_msg.P[2] = 532.39190674;
-  camera_info_msg.P[3] = -844.523864746;
-  camera_info_msg.P[4] = 0.;
-  camera_info_msg.P[5] = 314.63775635;
-  camera_info_msg.P[6] = 252.53335571;
-  camera_info_msg.P[7] = 763.838439941;
-  camera_info_msg.P[8] = 0.;
-  camera_info_msg.P[9] = 0.;
-  camera_info_msg.P[10] = 1.;
-  camera_info_msg.P[11] = 0.;
+  camera_info_msg.R[3] = 0; //0.083783410;
+  camera_info_msg.R[4] = 1; //-0.986979902;
+  camera_info_msg.R[5] = 0; //0.137298822;
+
+  camera_info_msg.R[6] = 0; //-0.486609042;
+  camera_info_msg.R[7] = 0; //-0.160761520;
+  camera_info_msg.R[8] = 1; //-0.858700991;
+
+  // camera_info_msg.P[0] = 531.49230957;
+  // camera_info_msg.P[1] = 0.;
+  // camera_info_msg.P[2] = 532.39190674;
+  // camera_info_msg.P[3] = 0; //-844.523864746;
+  // camera_info_msg.P[4] = 0.;
+  // camera_info_msg.P[5] = 314.63775635;
+  // camera_info_msg.P[6] = 252.53335571;
+  // camera_info_msg.P[7] = 0; //763.838439941;
+  // camera_info_msg.P[8] = 0.;
+  // camera_info_msg.P[9] = 0.;
+  // camera_info_msg.P[10] = 1.;
+  // camera_info_msg.P[11] = 0.;
 
   camera_info_msg.header.frame_id = "map";
   rgb_msg->header.frame_id = "map";
   depth_msg->header.frame_id = "map";
-
+  
   ros::Rate loop_rate(5);
   while (nh.ok()) {
+    // static tf::TransformBroadcaster br;
+    // tf::Transform transform;
+    // transform.setOrigin( tf::Vector3(0.0, 0.0, 0.0) );
+    // tf::Quaternion q;
+    // q.setRPY(0, 0, 0);
+    // transform.setRotation(q);
+    // br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "map", "pcl_people_detector_frame"));
+
     camera_info_msg.header.stamp = ros::Time::now();
     rgb_msg->header.stamp = camera_info_msg.header.stamp;
     depth_msg->header.stamp = camera_info_msg.header.stamp;
