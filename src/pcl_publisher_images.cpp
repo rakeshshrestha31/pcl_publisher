@@ -49,12 +49,12 @@ int main(int argc, char** argv)
   ros::Publisher camera_info_pub = nh.advertise<sensor_msgs::CameraInfo>(camera_info_topic, 1);
   
   cv::Mat rgb_image = cv::imread(
-    "/home/autolab/rakesh/mhad/kin_k01_s01_a01_r01_color_00000.ppm", 
+    "/home/rakesh/rakesh/cmpt726/BerkeleyMHAD/Kinect/Kin01/S01/A01/R01/kin_k01_s01_a01_r01_color_00000.ppm", 
     CV_LOAD_IMAGE_COLOR
   );
 
   cv::Mat depth_image = cv::imread(
-      "/home/autolab/rakesh/mhad/kin_k01_s01_a01_r01_depth_00000.pgm", 
+      "/home/rakesh/rakesh/cmpt726/BerkeleyMHAD/Kinect/Kin01/S01/A01/R01/kin_k01_s01_a01_r01_depth_00000.pgm", 
       CV_LOAD_IMAGE_ANYDEPTH | CV_LOAD_IMAGE_ANYCOLOR 
   );
 

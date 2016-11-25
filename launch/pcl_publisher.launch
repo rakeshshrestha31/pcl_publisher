@@ -2,9 +2,9 @@
     <group>
         <arg name="pkg_namespace" default="/pcl_publisher" />
 
-        <arg name="rgb_topic" default="rgb/image_rect_color" />
-        <arg name="depth_topic" default="depth_registered/image_rect" />
-        <arg name="camera_info_topic" default="rgb/camera_info" />
+        <arg name="rgb_topic" default="/rgb/image_rect_color" />
+        <arg name="depth_topic" default="/depth_registered/image_rect" />
+        <arg name="camera_info_topic" default="/rgb/camera_info" />
 
         <!-- <arg name="rgb_topic" default="$(arg pkg_namespace)/rgb" />
         <arg name="depth_topic" default="$(arg pkg_namespace)/depth" />

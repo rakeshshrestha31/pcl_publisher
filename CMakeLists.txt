@@ -31,7 +31,8 @@ message(STATUS "Using OpenCV version ${OpenCV_VERSION} installed at: ${OpenCV_IN
 message(STATUS "OpenCV supported compute capabilities are: ${OpenCV_COMPUTE_CAPABILITIES}")
 
 find_package(Eigen REQUIRED)
-find_package(PCL REQUIRED COMPONENTS common io visualization)
+find_package(PCL 1.7 REQUIRED)
+# find_package(PCL REQUIRED COMPONENTS common io visualization)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 QUIET)
@@ -39,6 +40,10 @@ if(NOT EIGEN3_FOUND)
   find_package(Eigen REQUIRED)
   set(EIGEN3_INCLUDE_DIRS ${EIGEN_INCLUDE_DIRS})
 endif()
+
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 
 include_directories(include/${PROJECT_NAME} ${BOOST_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS})
 include_directories(src ${BOOST_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
@@ -163,11 +168,13 @@ catkin_package(
 ## Declare a C++ executable
 add_executable(pcl_publisher_node src/pcl_publisher_node.cpp)
 add_executable(pcl_publisher_images src/pcl_publisher_images.cpp)
+add_executable(person_extractor src/person_extractor.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(pcl_publisher_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(pcl_publisher_images ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(person_extractor ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(pcl_publisher_node
@@ -178,6 +185,11 @@ target_link_libraries(pcl_publisher_node
 target_link_libraries(pcl_publisher_images
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
+)
+
+target_link_libraries(person_extractor
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
 )
 
 
